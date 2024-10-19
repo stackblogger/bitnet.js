@@ -1,0 +1,22 @@
+{
+  "name": "bitnet.js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stackblogger/bitnet.js.git"
+  },
+  "keywords": [
+    "bitnet"
+  ],
+  "author": "https://github.com/stackblogger",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stackblogger/bitnet.js/issues"
+  },
+  "homepage": "https://github.com/stackblogger/bitnet.js#readme"
+}

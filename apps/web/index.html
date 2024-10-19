@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Node.js & Python LLM</title>
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+  <h1>LLM Query</h1>
+  <textarea id="query" rows="4" cols="50"></textarea><br>
+  <button onclick="sendQuery()">Send</button>
+  <h2>Response:</h2>
+  <p id="response"></p>
+
+  <script>
+    const socket = io();
+
+    function sendQuery() {
+      const query = document.getElementById('query').value;
+      socket.emit('query', query);
+    }
+
+    socket.on('response', function (data) {
+      document.getElementById('response').innerText = data;
+    });
+  </script>
+</body>
+
+</html>
