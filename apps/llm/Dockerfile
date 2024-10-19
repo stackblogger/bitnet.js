@@ -12,7 +12,6 @@ WORKDIR /BitNet
 
 # Install Python dependencies
 RUN pip install -r requirements.txt && \
-    pip install socket && \
     pip cache purge
 
 # Run the code generation for Llama3-8B model
