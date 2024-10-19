@@ -3,8 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Node.js & Python LLM</title>
+  <title>LLM Query</title>
   <script src="/socket.io/socket.io.js"></script>
 </head>
 
@@ -13,18 +12,21 @@
   <textarea id="query" rows="4" cols="50"></textarea><br>
   <button onclick="sendQuery()">Send</button>
   <h2>Response:</h2>
-  <p id="response"></p>
+  <div id="response"></div>
 
   <script>
     const socket = io();
 
     function sendQuery() {
       const query = document.getElementById('query').value;
+      document.getElementById('response').innerHTML = ''; // Clear previous response
       socket.emit('query', query);
     }
 
-    socket.on('response', function (data) {
-      document.getElementById('response').innerText = data;
+    socket.on('response', function (word) {
+      // Append each word to the response div
+      const responseDiv = document.getElementById('response');
+      responseDiv.innerHTML += word + ' ';
     });
   </script>
 </body>
