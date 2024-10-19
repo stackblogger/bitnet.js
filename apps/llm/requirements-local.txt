@@ -1,0 +1,5 @@
+Flask
+Flask-SocketIO
+python-socketio
+requests
+eventlet

@@ -14,6 +14,13 @@ WORKDIR /BitNet
 RUN pip install -r requirements.txt && \
     pip cache purge
 
+# Copy the local requirements.txt for additional dependencies
+COPY requirements-local.txt .
+
+# Install additional dependencies from the local requirements file
+RUN pip install -r requirements-local.txt && \
+    pip cache purge
+
 # Run the code generation for Llama3-8B model
 RUN python3 utils/codegen_tl2.py --model Llama3-8B-1.58-100B-tokens --BM 256,128,256,128 --BK 96,96,96,96 --bm 32,32,32,32
 
