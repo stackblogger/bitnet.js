@@ -1,5 +1,4 @@
-Flask
-Flask-SocketIO
-python-socketio
+flask
+flask-socketio
 requests
 eventlet

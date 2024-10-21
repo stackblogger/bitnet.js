@@ -2,6 +2,12 @@
 
 BitNet.js is the unofficial Node.js implementation of Microsoft's [BitNet](https://github.com/microsoft/BitNet) project. This repository facilitates real-time interaction between a Node.js frontend and the BitNet Python model using **Socket.IO**. The app allows users to send queries to the BitNet LLM (Large Language Model) and receive responses word by word via a web interface.
 
+## Working Example
+
+Web app will display the results in real-time.
+
+![image](https://github.com/user-attachments/assets/ec164e5b-cc1f-4174-97f9-57fb44425217)
+
 ## Features
 
 - **Web-based interface**: A simple frontend built with HTML and JavaScript to interact with the BitNet model.
@@ -42,7 +48,7 @@ cd bitnet.js
 To build and start both the Node.js app and the BitNet model, use:
 
 ```bash
-docker compose up --build
+docker compose up --build -d
 ```
 
 This command will build the Docker images for both the **web** (Node.js) and **llm** (Python) containers, and run the services defined in the `docker-compose.yml` file.

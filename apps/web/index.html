@@ -5,6 +5,16 @@
   <meta charset="UTF-8">
   <title>LLM Query</title>
   <script src="/socket.io/socket.io.js"></script>
+  <style>
+    #response {
+      width: 70%;
+      border: 1px solid #dbdbdb;
+      border-radius: 4px;
+      padding: 20px;
+      height: 450px;
+      overflow-y: scroll;
+    }
+  </style>
 </head>
 
 <body>
@@ -19,14 +29,16 @@
 
     function sendQuery() {
       const query = document.getElementById('query').value;
-      document.getElementById('response').innerHTML = ''; // Clear previous response
+      document.getElementById('response').innerText = ''; // Clear previous response
       socket.emit('query', query);
     }
 
     socket.on('response', function (word) {
       // Append each word to the response div
       const responseDiv = document.getElementById('response');
-      responseDiv.innerHTML += word + ' ';
+      responseDiv.innerText += word + ' ';
+
+      responseDiv.scrollTop = responseDiv.scrollHeight;
     });
   </script>
 </body>
