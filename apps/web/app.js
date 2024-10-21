@@ -28,7 +28,6 @@ io.on('connection', (socket) => {
   // Receive words from Python server and send to browser client
   pythonSocket.on('response', (data) => {
     const word = data.word;
-    console.log(`Received word from Python: ${word}`);
 
     // Emit the word to the browser client
     socket.emit('response', word);
