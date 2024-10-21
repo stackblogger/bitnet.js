@@ -1,41 +1,33 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 import subprocess
-import threading
 
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins='*')
 
-# SocketIO event for real-time query handling
+def stream_process_output(command):
+    """Execute a command and emit stdout line by line."""
+
+    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1)
+    for stdout_line in process.stdout:
+        socketio.emit('response', {'word': stdout_line})
+        socketio.sleep(0.1)
+    process.stdout.close()
+    process.wait()
+
 @socketio.on('query')
-def handle_socket_query(data):
+def start_stream(data=None):
+    """Start the process and stream its stdout to the client."""
+
+    if data is None:
+        return
+
     query = data['query']
-    print(f"Received query: {query}")
 
-    # Get the SocketIO client ID (session ID) from the request context
-    client_sid = data.get('sid')
+    print(f"query to send- {query}")
 
-    def run_model():
-        # Run the Llama inference model with the query
-        process = subprocess.Popen(
-            ['python3', 'run_inference.py', '-m', 'Llama3-8B-1.58-100B-tokens-TQ2_0.gguf', '-p', query],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            text=True,
-            bufsize=1
-        )
-
-        # Read the output line by line
-        for line in process.stdout:
-            words = line.strip().split()
-            for word in words:
-                # Emit each word back to the specific client
-                socketio.emit('response', {'word': word}, room=client_sid)
-        process.stdout.close()
-        process.wait()
-
-    # Run the model in a separate thread
-    threading.Thread(target=run_model).start()
+    command = ['python3', 'run_inference.py', '-m', 'Llama3-8B-1.58-100B-tokens-TQ2_0.gguf', '-p', query]
+    socketio.start_background_task(target=stream_process_output, command=command)
 
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=5000)
