@@ -5,6 +5,16 @@
   <meta charset="UTF-8">
   <title>LLM Query</title>
   <script src="/socket.io/socket.io.js"></script>
+  <style>
+    #response {
+      width: 70%;
+      border: 1px solid #dbdbdb;
+      border-radius: 4px;
+      padding: 20px;
+      height: 450px;
+      overflow-y: scroll;
+    }
+  </style>
 </head>
 
 <body>
@@ -27,6 +37,8 @@
       // Append each word to the response div
       const responseDiv = document.getElementById('response');
       responseDiv.innerText += word + ' ';
+
+      responseDiv.scrollTop = responseDiv.scrollHeight;
     });
   </script>
 </body>
