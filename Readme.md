@@ -42,7 +42,7 @@ cd bitnet.js
 To build and start both the Node.js app and the BitNet model, use:
 
 ```bash
-docker compose up --build
+docker compose up --build -d
 ```
 
 This command will build the Docker images for both the **web** (Node.js) and **llm** (Python) containers, and run the services defined in the `docker-compose.yml` file.
