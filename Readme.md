@@ -42,7 +42,7 @@ cd bitnet.js
 To build and start both the Node.js app and the BitNet model, use:
 
 ```bash
-docker-compose up --build
+docker compose up --build
 ```
 
 This command will build the Docker images for both the **web** (Node.js) and **llm** (Python) containers, and run the services defined in the `docker-compose.yml` file.
@@ -81,7 +81,7 @@ The Python backend runs the BitNet model and returns the response:
 
 1. **Receive Query**: The Python app receives a query from the Node.js frontend.
 2. **Model Inference**: The query is processed by the BitNet model.
-3. **Stream Results**: The model’s response is streamed word by word back to the Node.js client.
+3. **Stream Results**: The model's response is streamed word by word back to the Node.js client.
 
 ### Sample Query Flow
 
