@@ -19,14 +19,14 @@
 
     function sendQuery() {
       const query = document.getElementById('query').value;
-      document.getElementById('response').innerHTML = ''; // Clear previous response
+      document.getElementById('response').innerText = ''; // Clear previous response
       socket.emit('query', query);
     }
 
     socket.on('response', function (word) {
       // Append each word to the response div
       const responseDiv = document.getElementById('response');
-      responseDiv.innerHTML += word + ' ';
+      responseDiv.innerText += word + ' ';
     });
   </script>
 </body>
