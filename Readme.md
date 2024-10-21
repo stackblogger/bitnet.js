@@ -1,6 +1,6 @@
 # BitNet.js
 
-BitNet.js is the unofficial Node.js implementation of Microsoft's [BitNet](https://github.com/microsoft/BitNet) project. This repository facilitates real-time interaction between a Node.js frontend and the BitNet Python model using **Socket.IO**. The app allows users to send queries to the BitNet LLM (Large Language Model) and receive responses word by word via a web interface.
+BitNet.js is the unofficial Node.js implementation of Microsoft's [BitNet](https://github.com/microsoft/BitNet) project. This repository facilitates real-time interaction between a Node.js frontend and the BitNet Python model using **Socket.IO**. The app allows users to send queries to the BitNet LLM (Large Language Model) and receive responses line by line via a web interface.
 
 ## Working Example
 
@@ -12,7 +12,7 @@ Web app will display the results in real-time.
 
 - **Web-based interface**: A simple frontend built with HTML and JavaScript to interact with the BitNet model.
 - **Real-time communication**: Uses **Socket.IO** for bi-directional communication between the Node.js app and the Python-based BitNet model.
-- **Dockerized environment**: Both the Node.js app and BitNet model run in separate Docker containers managed by **docker-compose**.
+- **Dockerized environment**: Both the Node.js app and BitNet model run in separate Docker containers managed by **docker compose**.
 
 ## Directory Structure
 
@@ -20,19 +20,20 @@ Web app will display the results in real-time.
 bitnet.js/
 ├── apps/
 │   ├── llm/
-│   │   └── Dockerfile         # Dockerfile for the BitNet model
+│   │   └── Dockerfile              # Dockerfile for the BitNet model
+│   │   └── requirements-local.txt  # List of packages that are used in Local Server
+│   │   └── run_model.py            # Local Python Server to start Socket
 │   ├── web/
-│   │   ├── Dockerfile         # Dockerfile for the Node.js application
-│   │   ├── app.js             # Node.js app (Socket.IO client)
-│   │   ├── index.html         # Frontend (textarea for input, display for output)
-├── docker-compose.yml         # Compose file to run both containers together
-├── README.md                  # Documentation
+│   │   ├── Dockerfile              # Dockerfile for the Node.js application
+│   │   ├── app.js                  # Node.js app (Socket.IO client)
+│   │   ├── index.html              # Frontend (textarea for input, display for output)
+├── docker-compose.yml              # Compose file to run both containers together
+├── README.md                       # Documentation
 ```
 
 ## Prerequisites
 
 - **Docker**: Ensure Docker is installed. [Install Docker](https://docs.docker.com/get-docker/)
-- **Docker Compose**: Ensure Docker Compose is installed. [Install Docker Compose](https://docs.docker.com/compose/install/)
 
 ## Setup Instructions
 
@@ -71,7 +72,7 @@ You'll see a textarea where you can input your queries and send them to the BitN
 
 - The **Node.js application** (in `apps/web`) serves a simple web interface where users can input their queries. The application connects to the **Python backend** using Socket.IO.
 - The **Python app** (in `apps/llm`) runs the BitNet model, processes the queries, and streams the response back to the Node.js client, word by word.
-- Both applications are containerized and communicate through **docker-compose**.
+- Both applications are containerized and communicate through **docker compose**.
 
 ### Node.js Frontend (app.js)
 
@@ -88,21 +89,6 @@ The Python backend runs the BitNet model and returns the response:
 1. **Receive Query**: The Python app receives a query from the Node.js frontend.
 2. **Model Inference**: The query is processed by the BitNet model.
 3. **Stream Results**: The model's response is streamed word by word back to the Node.js client.
-
-### Sample Query Flow
-
-- User enters: `Why is the sky blue?`
-- Python backend processes the query and returns: 
-  - `The`
-  - `sky`
-  - `is`
-  - `blue`
-  - `due`
-  - `to`
-  - `Rayleigh`
-  - `scattering`.
-
-Each word is transmitted individually and displayed in real-time.
 
 ## Docker Configuration
 
@@ -197,6 +183,7 @@ services:
       - "5000:5000"
     networks:
       - app-network
+    tty: True
 
   web:
     build:
