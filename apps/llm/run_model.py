@@ -8,12 +8,16 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 
 # Global variable to manage thread control
 stop_event = threading.Event()
+# Global variable to store the process reference
+current_process = None
 
 def stream_process_output(command):
     """Execute a command and emit stdout line by line, with thread control."""
+    global current_process
 
     # Start the subprocess
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1)
+    current_process = process  # Store the reference to the current process
 
     for stdout_line in process.stdout:
         if stop_event.is_set():  # Stop if the event is triggered
@@ -27,7 +31,7 @@ def stream_process_output(command):
 @socketio.on('query')
 def start_stream(data=None):
     """Start the process and stream its stdout to the client, ensuring thread control."""
-    global stop_event
+    global stop_event, current_process
 
     if data is None:
         return
@@ -42,7 +46,10 @@ def start_stream(data=None):
 
     print(f"command- {command}")
 
-    # If there is an existing running task, signal it to stop
+    # If there is an existing running task, terminate it
+    if current_process and current_process.poll() is None:
+        current_process.terminate()
+
     stop_event.set()  # Signal the current thread to stop
     stop_event.clear()  # Reset the stop event for the new thread
 
