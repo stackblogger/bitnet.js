@@ -33,9 +33,14 @@ def start_stream(data=None):
         return
 
     query = data['query']
-    print(f"query to send- {query}")
 
     command = ['python3', 'run_inference.py', '-m', 'Llama3-8B-1.58-100B-tokens-TQ2_0.gguf', '-p', query]
+
+    if 'args' in data and data.get('args'):
+        additional_args = data['args'].strip().split()
+        command.extend(additional_args)
+
+    print(f"command- {command}")
 
     # If there is an existing running task, signal it to stop
     stop_event.set()  # Signal the current thread to stop

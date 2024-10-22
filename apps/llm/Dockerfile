@@ -23,8 +23,9 @@ RUN pip install --no-cache-dir -r requirements-local.txt
 RUN python3 utils/codegen_tl2.py --model Llama3-8B-1.58-100B-tokens --BM 256,128,256,128 --BK 96,96,96,96 --bm 32,32,32,32
 
 # Build the model using cmake with specified compilers
-RUN cmake -B build -DBITNET_X86_TL2=ON -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ && \
-    cmake --build build --target llama-cli --config Release
+RUN cmake -B build -DBITNET_X86_TL2=ON -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+
+RUN cmake --build build --config Release
 
 # Download the Llama model from HuggingFace
 ADD https://huggingface.co/brunopio/Llama3-8B-1.58-100B-tokens-GGUF/resolve/main/Llama3-8B-1.58-100B-tokens-TQ2_0.gguf .
@@ -39,4 +40,4 @@ EXPOSE 5000
 COPY run_model.py .
 
 # Run the model in inference mode, listening for queries
-CMD ["python3", "run_model.py", "-m", "Llama3-8B-1.58-100B-tokens-TQ2_0.gguf"]
+CMD ["python3", "run_model.py"]
