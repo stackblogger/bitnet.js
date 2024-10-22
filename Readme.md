@@ -6,7 +6,13 @@ BitNet.js is the unofficial Node.js implementation of Microsoft's [BitNet](https
 
 Web app will display the results in real-time.
 
-![image](https://github.com/user-attachments/assets/ec164e5b-cc1f-4174-97f9-57fb44425217)
+### Docker App Run
+
+![bitnet js-docker-run](https://github.com/user-attachments/assets/8c439904-fec7-4465-ac7d-5ebfc29d2442)
+
+### Web Interface Interaction
+
+![bitnet js-llm](https://github.com/user-attachments/assets/4c266ff4-bc69-4935-9922-81816216166b)
 
 ## Features
 
