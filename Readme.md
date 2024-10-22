@@ -1,6 +1,6 @@
 # BitNet.js
 
-BitNet.js is the Node.js implementation of Microsoft's [BitNet](https://github.com/microsoft/BitNet) project. This repository facilitates real-time interaction between a Node.js frontend and the BitNet Python model using **Socket.IO**. The app allows users to send queries to the BitNet LLM (Large Language Model) and receive responses line by line via a web interface.
+BitNet.js is the Node.js implementation of Microsoft's [bitnet.cpp](https://github.com/microsoft/BitNet) inference framework. This repository facilitates real-time interaction between a Node.js frontend and the bitnet 1-bit LLM model using **Socket.IO**. The app allows users to send queries to the BitNet LLM (Large Language Model) and receive responses line by line via a web interface.
 
 ## Working Example
 
@@ -72,7 +72,7 @@ You'll see a textarea where you can input your queries and send them to the BitN
 
 1. **Enter a query** in the provided textarea (e.g., "Why is the sky blue?").
 2. **Click Send**. Your query is transmitted to the BitNet model via Socket.IO.
-3. The response will be returned **word by word** in real-time.
+3. The response will be returned **line by line** in real-time.
 
 ## How it Works
 
@@ -95,117 +95,6 @@ The Python backend runs the BitNet model and returns the response:
 1. **Receive Query**: The Python app receives a query from the Node.js frontend.
 2. **Model Inference**: The query is processed by the BitNet model.
 3. **Stream Results**: The model's response is streamed word by word back to the Node.js client.
-
-## Docker Configuration
-
-### apps/llm/Dockerfile (Python LLM)
-
-This Dockerfile sets up the environment for running the BitNet model. It includes the necessary dependencies and commands to launch the model server.
-
-```dockerfile
-FROM python:3.9-alpine
-
-# Install necessary dependencies and tools
-RUN apk add --no-cache build-base cmake clang git && \
-    rm -rf /var/cache/apk/*
-
-# Clone the BitNet repository without history
-RUN git clone --recursive --depth 1 https://github.com/microsoft/BitNet.git && \
-    rm -rf BitNet/.git
-
-WORKDIR /BitNet
-
-# Install Python dependencies
-RUN pip install -r requirements.txt && \
-    pip cache purge
-
-# Copy the local requirements.txt for additional dependencies
-COPY requirements-local.txt .
-
-# Install additional dependencies from the local requirements file
-RUN pip install -r requirements-local.txt && \
-    pip cache purge
-
-# Run the code generation for Llama3-8B model
-RUN python3 utils/codegen_tl2.py --model Llama3-8B-1.58-100B-tokens --BM 256,128,256,128 --BK 96,96,96,96 --bm 32,32,32,32
-
-# Build the model using cmake with specified compilers
-RUN cmake -B build -DBITNET_X86_TL2=ON -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ && \
-    cmake --build build --target llama-cli --config Release
-
-# Download the Llama model from HuggingFace
-ADD https://huggingface.co/brunopio/Llama3-8B-1.58-100B-tokens-GGUF/resolve/main/Llama3-8B-1.58-100B-tokens-TQ2_0.gguf .
-
-# Verify the integrity of the model file
-RUN echo "2565559c82a1d03ecd1101f536c5e99418d07e55a88bd5e391ed734f6b3989ac Llama3-8B-1.58-100B-tokens-TQ2_0.gguf" | sha256sum -c
-
-# Expose port for communication with the Node.js app
-EXPOSE 5000
-
-# Run a Python script that handles queries from the Node.js app using socket.io
-COPY run_model.py .
-
-# Run the model in inference mode, listening for queries
-CMD ["python3", "run_model.py", "-m", "Llama3-8B-1.58-100B-tokens-TQ2_0.gguf"]
-```
-
-### apps/web/Dockerfile (Node.js Application)
-
-This Dockerfile sets up the Node.js application environment. It installs required packages and specifies how to run the application.
-
-```dockerfile
-# Base image for Node.js
-FROM node:16-alpine
-
-# Set working directory
-WORKDIR /usr/src/app
-
-# Copy package.json and install dependencies
-COPY package*.json ./
-RUN npm install
-
-# Copy app files
-COPY . .
-
-# Expose port
-EXPOSE 3000
-
-# Run the Node.js app
-CMD ["node", "app.js"]
-```
-
-### docker-compose.yml
-
-The `docker-compose.yml` file defines the services for both the Node.js and BitNet containers.
-
-```yml
-version: '3'
-services:
-  llm:
-    build:
-      context: ./apps/llm
-    container_name: llm
-    ports:
-      - "5000:5000"
-    networks:
-      - app-network
-    tty: True
-
-  web:
-    build:
-      context: ./apps/web
-    container_name: web
-    ports:
-      - "3000:3000"
-    depends_on:
-      - llm
-    networks:
-      - app-network
-
-networks:
-  app-network:
-    driver: bridge
-```
 
 ## License
 
