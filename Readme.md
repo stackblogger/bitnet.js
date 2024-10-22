@@ -1,6 +1,6 @@
 # BitNet.js
 
-BitNet.js is the unofficial Node.js implementation of Microsoft's [BitNet](https://github.com/microsoft/BitNet) project. This repository facilitates real-time interaction between a Node.js frontend and the BitNet Python model using **Socket.IO**. The app allows users to send queries to the BitNet LLM (Large Language Model) and receive responses line by line via a web interface.
+BitNet.js is the Node.js implementation of Microsoft's [BitNet](https://github.com/microsoft/BitNet) project. This repository facilitates real-time interaction between a Node.js frontend and the BitNet Python model using **Socket.IO**. The app allows users to send queries to the BitNet LLM (Large Language Model) and receive responses line by line via a web interface.
 
 ## Working Example
 
@@ -26,9 +26,9 @@ Web app will display the results in real-time.
 bitnet.js/
 ├── apps/
 │   ├── llm/
-│   │   └── Dockerfile              # Dockerfile for the BitNet model
-│   │   └── requirements-local.txt  # List of packages that are used in Local Server
-│   │   └── run_model.py            # Local Python Server to start Socket
+│   │   ├── Dockerfile              # Dockerfile for the BitNet model
+│   │   ├── requirements-local.txt  # List of packages that are used in Local Server
+│   │   ├── run_model.py            # Local Python Server to start Socket
 │   ├── web/
 │   │   ├── Dockerfile              # Dockerfile for the Node.js application
 │   │   ├── app.js                  # Node.js app (Socket.IO client)
