@@ -12,7 +12,8 @@ Web app will display the results in real-time.
 
 ### Web Interface Interaction
 
-![bitnet js-llm](https://github.com/user-attachments/assets/4c266ff4-bc69-4935-9922-81816216166b)
+![bitnet js-llm](https://github.com/user-attachments/assets/83882cf5-0fb4-4fe4-9068-6447e26c4283)
+
 
 ## Features
 
