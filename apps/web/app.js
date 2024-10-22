@@ -18,11 +18,11 @@ io.on('connection', (socket) => {
   console.log('New browser client connected');
 
   // When a query is received from the browser client
-  socket.on('query', (query) => {
+  socket.on('query', ({ query, args }) => {
     console.log(`Received query from browser: ${query}`);
 
     // Forward the query to the Python server
-    pythonSocket.emit('query', { query });
+    pythonSocket.emit('query', { query, args });
   });
 
   // Receive words from Python server and send to browser client
