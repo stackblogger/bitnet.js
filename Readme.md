@@ -1,5 +1,8 @@
 # BitNet.js
 
+[![License: MIT](https://img.shields.io/badge/license-MIT-purple.svg)](https://opensource.org/licenses/MIT)
+![version](https://img.shields.io/badge/version-1.0.0-purple)
+
 BitNet.js is the Node.js implementation of Microsoft's [bitnet.cpp](https://github.com/microsoft/BitNet) inference framework. This repository facilitates real-time interaction between a Node.js frontend and the bitnet 1-bit LLM model using **Socket.IO**. The app allows users to send queries to the BitNet LLM (Large Language Model) and receive responses line by line via a web interface.
 
 ## Working Example
